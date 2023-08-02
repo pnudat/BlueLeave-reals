@@ -11,7 +11,6 @@ const {
 
 router.post('/login', async (req, res) => {
     // console.log(req.body);
-
     const username = req.body.username;
     const password = req.body.password;
 
@@ -20,9 +19,7 @@ router.post('/login', async (req, res) => {
     } else if (password == '' || password == undefined) {
         return res.status(401).send('Password is required');
     }
-
-    // Find and get ou user
-    FindUser(username, (err, data) => {
+    FindUser(username, (err, data) => {                     // Find and get ou user
         if (err) {
             console.log('Error retrieving OUs:', err);
             res.status(401).send('Error retrieving OUs');

@@ -20,10 +20,8 @@ router.get('/users',VerifyToken, (req, res) => {
     });
 });
 
-
 // outer.put('/update', VerifyToken, (req, res) => {
 //     res.status(200).send('Welcome User:id');
 // });
-
 
 module.exports = router;
