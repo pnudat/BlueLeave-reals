@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 // const router = require('./routes/users');
 const auth = require('./routes/AuthLogin');
 const users = require('./routes/GetAllUser');
+const searchID = require('./routes/EditUser');
 
 
 const app = express();
@@ -17,8 +18,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use('/api', auth)
-
 app.use('/api', users)
+app.use('/api', searchID)
 
 // readdirSync('./src/routes').map((r) => app.use('/api', require('./src/routes/' + r)));
 

@@ -18,7 +18,7 @@ function LdapSearchAllUser(callback) {
         const searchOptions = {
             scope: 'sub',
             filter: '(objectClass=person)',
-            attributes: ['employeeID', 'displayName', 'whenCreated', 'company', ],
+            attributes: ['employeeID', 'displayName', 'whenCreated', 'company',],
         };
 
         ldapClient.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
@@ -30,7 +30,7 @@ function LdapSearchAllUser(callback) {
             }
 
             searchRes.on('searchEntry', (entry) => {
-                const user = entry.pojo;
+                const user = entry.object;
                 users.push(user);
             });
 
