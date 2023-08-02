@@ -30,7 +30,7 @@ function LdapSearchAllUser(callback) { // Function to initialize and bind the LD
             }
 
             searchRes.on('searchEntry', (entry) => {
-                const user = entry.pojo; //opject or pojo 
+                const user = entry.pojo; //object or pojo 
                 users.push(user);
             });
 
