@@ -3,8 +3,7 @@ const {
     Config
 } = require('../config/Index');
 
-// Function to initialize and bind the LDAP client
-function LdapSearchAllUser(callback) {
+function LdapSearchAllUser(callback) { // Function to initialize and bind the LDAP client
     const ldapClient = ldap.createClient({
         url: Config.url,
     });
@@ -17,11 +16,12 @@ function LdapSearchAllUser(callback) {
 
         const searchOptions = {
             scope: 'sub',
-            filter: '(objectClass=person)',
-            attributes: ['employeeID', 'displayName', 'whenCreated', 'company',],
+            filter: '(&(objectClass=organizationalPerson)(employeeID=*))',
+            attributes: ['cn', 'sn', 'company', 'mail', 'userAccountControl']
         };
 
         ldapClient.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
+
             const users = [];
 
             if (searchErr) {
@@ -30,7 +30,7 @@ function LdapSearchAllUser(callback) {
             }
 
             searchRes.on('searchEntry', (entry) => {
-                const user = entry.object;
+                const user = entry.pojo; //opject or pojo 
                 users.push(user);
             });
 

@@ -1,14 +1,13 @@
 const express = require('express');
+const router = express.Router();
 const {
-    bindToLDAPServer,
+    BindToLdapServer,
     FindUser
 } = require('../controllers/ServiceLogin');
 const jwt = require('jsonwebtoken');
 const {
     Config
 } = require('../config/Index');
-
-const router = express.Router();
 
 router.post('/login', async (req, res) => {
     // console.log(req.body);
@@ -28,20 +27,19 @@ router.post('/login', async (req, res) => {
             console.log('Error retrieving OUs:', err);
             res.status(401).send('Error retrieving OUs');
         } else {
-            bindToLDAPServer(username, password, data[0])
+            BindToLdapServer(username, password, data[0])
                 .then(() => {
                     console.log('Successfully bound to server');
 
                     const token = jwt.sign({
                         username: username,
                     }, Config.secret_key, {
-                        expiresIn: '10m'
+                        expiresIn: '5m'
                     });
                     // console.log({token: token});
                     res.send({
                         token
                     });
-
                 })
                 .catch((error) => {
                     console.log('Error:', error);

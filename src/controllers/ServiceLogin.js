@@ -7,8 +7,7 @@ const client = ldap.createClient({
     url: Config.url,
 });
 
-// find user at Ldap server
-const FindUser = (username, callback) => {
+const FindUser = (username, callback) => {// find user at Ldap server
 
     const client = ldap.createClient({
         url: Config.url,
@@ -56,7 +55,7 @@ const FindUser = (username, callback) => {
 }
 
 // bind to the server
-function bindToLDAPServer(username, password, bindDN) {
+function BindToLdapServer(username, password, bindDN) {
     return new Promise((resolve, reject) => {
         client.bind(Config.adminDN, Config.adminPass, (bindErr) => {
             if (bindErr) {
@@ -81,5 +80,5 @@ function bindToLDAPServer(username, password, bindDN) {
 
 module.exports = {
     FindUser,
-    bindToLDAPServer,
+    BindToLdapServer,
 };

@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 //     readdirSync
 // } = require('fs');
 // const router = require('./routes/users');
-const auth = require('./routes/AuthLogin');
-const users = require('./routes/GetAllUser');
-const searchID = require('./routes/EditUser');
+const Auth = require('./routes/Login');
+const Users = require('./routes/AllUsers');
+const User = require('./routes/User');
 
 
 const app = express();
@@ -17,12 +17,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-app.use('/api', auth)
-app.use('/api', users)
-app.use('/api', searchID)
+app.use('/api', Auth)
+app.use('/api', Users)
+app.use('/api', User)
 
 // readdirSync('./src/routes').map((r) => app.use('/api', require('./src/routes/' + r)));
 
 app.listen(port, () => {
-    console.log(`Server started on port ${port}`);
+    console.log(`Server started on http://localhost:${port}`);
 });
