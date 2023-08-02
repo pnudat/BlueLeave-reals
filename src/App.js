@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 // } = require('fs');
 // const router = require('./routes/users');
 const Auth = require('./routes/Login');
-const Users = require('./routes/AllUsers');
+const Users = require('./routes/AllUser');
 const User = require('./routes/User');
 
 
