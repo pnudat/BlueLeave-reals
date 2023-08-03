@@ -17,7 +17,7 @@ function LdapSearchAllUser(callback) { // Function to initialize and bind the LD
         const searchOptions = {
             scope: 'sub',
             filter: '(&(objectClass=organizationalPerson)(employeeID=*))',
-            attributes: ['cn', 'sn', 'company', 'mail', 'userAccountControl']
+            attributes: ['cn', 'sn', 'company', 'mail', 'userAccountControl', 'employeeID']
         };
 
         ldapClient.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {

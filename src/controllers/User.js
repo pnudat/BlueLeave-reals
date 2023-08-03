@@ -17,7 +17,7 @@ function LdapSearchOneUser(EmployeeID, callback) { // Function สำหรั�
         const searchOptions = {
             filter: `(employeeID=${EmployeeID})`, // กำหนด employeeID เป็นเลข
             scope: 'sub',
-            attributes: ['cn', 'sn', 'mail'], // กำหนด attribute ที่ต้องการให้แสดง
+            attributes: ['cn', 'sn', 'company', 'mail', 'userAccountControl', 'employeeID', 'department'], // กำหนด attribute ที่ต้องการให้แสดง
         };
 
         client.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
@@ -35,7 +35,7 @@ function LdapSearchOneUser(EmployeeID, callback) { // Function สำหรั�
                 return callback(error);
             });
 
-            searchRes.on('end', (result) => {
+            searchRes.on('end', () => {
                 client.unbind();
                 return callback(null, entries);
             });
