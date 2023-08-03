@@ -7,7 +7,7 @@ const {
     VerifyToken
 } = require('../midleware/Auth');
 
-router.get('/user/:EmployeeID', VerifyToken, (req, res) => {// Express route สำหรับแสดงข้อมูลผู้ใช้คนเดียว
+router.get('/user/:EmployeeID', VerifyToken, (req, res) => { // Express route สำหรับแสดงข้อมูลผู้ใช้คนเดียว
     const EmployeeID = req.params.EmployeeID;
 
     LdapSearchOneUser(EmployeeID, (err, userData) => {
@@ -22,7 +22,7 @@ router.get('/user/:EmployeeID', VerifyToken, (req, res) => {// Express route ส
                 error: 'User not found'
             });
         }
-        
+
         res.json(userData); // นำข้อมูลผู้ใช้ที่ได้มาแสดงผลหรือใช้ตามที่คุณต้องการ
     });
 });

@@ -7,7 +7,7 @@ const client = ldap.createClient({
     url: Config.url,
 });
 
-const FindUser = (username, callback) => {// find user at Ldap server
+const FindUser = (username, callback) => { // find user at Ldap server
 
     const client = ldap.createClient({
         url: Config.url,

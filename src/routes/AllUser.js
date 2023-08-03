@@ -8,7 +8,7 @@ const {
 } = require('../controllers/AllUser');
 
 // Route เพื่อดึงข้อมูล user ทั้งหมด
-router.get('/users',VerifyToken, (req, res) => {
+router.get('/users', VerifyToken, (req, res) => {
     LdapSearchAllUser((err, users) => {
         if (err) {
             return res.status(500).json({
