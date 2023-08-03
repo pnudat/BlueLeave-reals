@@ -16,7 +16,7 @@ function LdapSearchAllUser(callback) { // Function to initialize and bind the LD
 
         const searchOptions = {
             scope: 'sub',
-            filter: '(&(objectClass=organizationalPerson)(employeeID=*))',
+            filter: '(employeeID=*)',
             attributes: ['cn', 'sn', 'company', 'mail', 'userAccountControl', 'employeeID']
         };
 
@@ -29,9 +29,8 @@ function LdapSearchAllUser(callback) { // Function to initialize and bind the LD
                 return callback(searchErr, null);
             }
 
-            searchRes.on('searchEntry', (entry) => {
-                const user = entry.pojo; //object or pojo 
-                users.push(user);
+            searchRes.on('searchEntry', (entry) => {         
+                users.push(entry.pojo);  //object or pojo 
             });
 
             searchRes.on('error', (err) => {

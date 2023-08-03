@@ -10,7 +10,7 @@ const User = require('./routes/User');
 
 
 const app = express();
-const port = 8080;
+const port = 8000;
 
 app.use(bodyParser.urlencoded({
     extended: false
