@@ -1,9 +1,12 @@
 const ldap = require('ldapjs');
 const {
+
     Config
+
 } = require('../config/Index');
 
-function LdapSearchOneUser(EmployeeID, callback) { // Function สำหรับเรียกดูข้อมูลผู้ใช้จาก LDAP
+function LdapSearchOneUser(EmployeeID, callback) {
+    
     const client = ldap.createClient({
         url: Config.url
     });
@@ -17,7 +20,7 @@ function LdapSearchOneUser(EmployeeID, callback) { // Function สำหรั�
         const searchOptions = {
             filter: `(employeeID=${EmployeeID})`, // กำหนด employeeID เป็นเลข
             scope: 'sub',
-            attributes: ['cn', 'sn', 'company', 'mail', 'department'], // กำหนด attribute ที่ต้องการให้แสดง
+            attributes: ['cn', 'sn', 'company', 'sAMAccountName', 'mail', 'department'], // กำหนด attribute ที่ต้องการให้แสดง
         };
 
         client.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
@@ -42,9 +45,6 @@ function LdapSearchOneUser(EmployeeID, callback) { // Function สำหรั�
         });
     });
 }
-
-
-
 
 module.exports = {
     LdapSearchOneUser

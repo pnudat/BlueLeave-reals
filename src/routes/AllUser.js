@@ -11,7 +11,7 @@ const {
 
 } = require('../controllers/AllUser');
 
-router.get('/users', (req, res) => { // Route เพื่อดึงข้อมูล user ทั้งหมด
+router.get('/users', VerifyToken,(req, res) => { // Route เพื่อดึงข้อมูล user ทั้งหมด
 
     LdapSearchAllUser((err, users) => {
         if (err) {

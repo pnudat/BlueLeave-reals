@@ -7,7 +7,7 @@ const {
     VerifyToken
 } = require('../midleware/Auth');
 
-router.get('/user/:EmployeeID',  (req, res) => { // Express route สำหรับแสดงข้อมูลผู้ใช้คนเดียว
+router.get('/user/:EmployeeID', VerifyToken, (req, res) => { // Express route สำหรับแสดงข้อมูลผู้ใช้คนเดียว
     const EmployeeID = req.params.EmployeeID;
 
     LdapSearchOneUser(EmployeeID, (err, userData) => {
@@ -26,6 +26,8 @@ router.get('/user/:EmployeeID',  (req, res) => { // Express route สำหร�
         const reformattedData = userData.map((entry) => ({
             name: entry.attributes.find(attr => attr.type === "cn")?.values[0],
             lastname: entry.attributes.find(attr => attr.type === "sn")?.values[0],
+            email: entry.attributes.find(attr => attr.type === "mail")?.values[0],
+            username: entry.attributes.find(attr => attr.type === "sAMAccountName")?.values[0],
             company: entry.attributes.find(attr => attr.type === "company")?.values[0],
             department: entry.attributes.find(attr => attr.type === "department")?.values[0]
         }))

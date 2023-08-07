@@ -6,6 +6,11 @@ const Config = {
   adminPass: 'Wuekr0@1',
   secret_key: 'Aomlnwza007',
   saltRounds: 10,
+  user: 'postgres',
+  host: 'localhost',
+  database: 'blueleave',
+  password: 'Pass@27052002',
+  port: 5432,
 }
 
 
