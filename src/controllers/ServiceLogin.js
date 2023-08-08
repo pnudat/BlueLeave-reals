@@ -25,7 +25,7 @@ const FindUser = (username, callback) => { // find user at Ldap server
             attributes: ['ou'],
         };
 
-        const ouList = [];
+        const dataList = [];
 
         client.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
             if (searchErr) {
@@ -34,7 +34,7 @@ const FindUser = (username, callback) => { // find user at Ldap server
             }
 
             searchRes.on('searchEntry', (entry) => {
-                ouList.push(entry.object);
+                dataList.push(entry.object);
             });
 
             searchRes.on('error', (err) => {
@@ -47,7 +47,7 @@ const FindUser = (username, callback) => { // find user at Ldap server
                         console.error('LDAP unbind error:', unbindErr);
                         return callback(unbindErr);
                     }
-                    return callback(null, ouList);
+                    return callback(null, dataList);
                 });
             });
         });

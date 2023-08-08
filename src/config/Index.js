@@ -6,6 +6,9 @@ const Config = {
   adminPass: 'Wuekr0@1',
   secret_key: 'Aomlnwza007',
   saltRounds: 10,
+}
+
+const Pgconfig = {
   user: 'postgres',
   host: 'localhost',
   database: 'blueleave',
@@ -14,4 +17,4 @@ const Config = {
 }
 
 
-module.exports = { Config };
+module.exports = { Config,Pgconfig };

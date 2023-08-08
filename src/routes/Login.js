@@ -33,11 +33,11 @@ router.post('/login', async (req, res) => {
                     }, Config.secret_key, {
                         expiresIn: '5m'
                     });
-                    
+
                     res.send({
                         token
                     });
-                    
+
                 })
                 .catch((error) => {
                     console.log('Error:', error);
