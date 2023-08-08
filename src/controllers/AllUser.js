@@ -74,7 +74,19 @@ async function postgresData() {
   }
 }
 
+function birthDate(ldapTime) {
+  const Timestamp = parseInt(ldapTime) / 10000000 - 11644473600;
+  const dateObject = new Date(Timestamp * 1000);
+
+  const day = dateObject.getUTCDate().toString().padStart(2, '0');
+  const month = (dateObject.getUTCMonth() + 1).toString().padStart(2, '0');
+  const year = dateObject.getUTCFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 module.exports = {
   getAllUser,
-  postgresData
+  postgresData,
+  birthDate
 };
