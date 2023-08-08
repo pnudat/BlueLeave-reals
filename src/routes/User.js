@@ -37,7 +37,7 @@ router.get('/user/:EmployeeID', async (req, res) => { // Express route สำห
                 position_name: pgData.position_name,
             };
 
-            res.json({ ldapEntry: ldapFormattedData, employeeData: pgFormattedData });
+            res.json({ ldapData: ldapFormattedData, postgresData: pgFormattedData });
         } else {
             res.status(404).json({ error: 'LDAP Entry Not Found' });
         }
