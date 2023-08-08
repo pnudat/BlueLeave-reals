@@ -16,7 +16,7 @@ function getAllUser(callback) { // Function to initialize and bind the LDAP clie
     const searchOptions = {
       scope: 'sub',
       filter: '(employeeID=*)',
-      attributes: ['cn', 'sn', 'company', 'mail', 'userAccountControl', 'employeeID']
+      attributes: ['cn', 'sn', 'company', 'mail', 'whenCreated', 'pwdLastSet', 'userAccountControl', 'employeeID']
     };
 
     ldapClient.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
