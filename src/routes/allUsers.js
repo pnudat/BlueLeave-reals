@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { VerifyToken } = require('../midleware/Auth');
-const { getAllUser, postgresData, birthDate } = require('../controllers/allUser');
+const { getAllUser, postgresData, birthDate } = require('../controllers/allUsers');
 
 router.get('/users', (req, res) => {
     getAllUser(async (err, users) => {
