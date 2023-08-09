@@ -1,14 +1,8 @@
 const ldap = require('ldapjs');
-const { Config } = require('../config/Index');
+const { Config,Pgconfig } = require('../config/Index');
 const { Pool } = require('pg');
 
-const pgPool = new Pool({
-    user: 'postgres',
-    password: 'Pass@27052002',
-    host: 'localhost',
-    database: 'blueleave',
-    port: 5432,
-});
+const pgPool = new Pool(Pgconfig);
 
 
 async function oneUser(EmployeeID) {
@@ -26,7 +20,7 @@ async function oneUser(EmployeeID) {
             const searchOptions = {
                 filter: `(employeeID=${EmployeeID})`,
                 scope: 'sub',
-                attributes: ['cn', 'sn', 'company', 'sAMAccountName', 'mail', 'department'],
+                attributes: ['cn', 'sn', 'company', 'sAMAccountName', 'mail', 'department', 'pwdLastSet', 'whenCreated'],
             };
 
             try {
@@ -62,15 +56,12 @@ async function oneUser(EmployeeID) {
     });
 }
 
-
 async function postgresData(EmployeeID) {
     try {
         const query = `
-        SELECT e.*, g.gender_name, b.birth_date, d.entered_date, r.role_name, p.position_name
+        SELECT e.*, g.gender_name, r.role_name, p.position_name
         FROM employee e
         JOIN gender g ON e.gender_id = g.gender_id
-        JOIN date_of_birth b ON e.birth_id = b.birth_id
-        JOIN date_entered d ON e.entered_id = d.entered_id
         JOIN role r ON e.role_id = r.role_id
         JOIN position p ON e.position_id = p.position_id
         WHERE e.employee_id = $1`;
@@ -84,9 +75,32 @@ async function postgresData(EmployeeID) {
     }
 }
 
+function birthDate(ldapTime) {
+    const Timestamp = parseInt(ldapTime) / 10000000 - 11644473600;
+    const dateObject = new Date(Timestamp * 1000);
+  
+    const day = dateObject.getUTCDate().toString().padStart(2, '0');
+    const month = (dateObject.getUTCMonth() + 1).toString().padStart(2, '0');
+    const year = dateObject.getUTCFullYear();
+  
+    return `${day}/${month}/${year}`;
+  }
 
+function enteredDate(ldapDate) {
+    const year = ldapDate.slice(0, 4);
+    const month = ldapDate.slice(4, 6);
+    const day = ldapDate.slice(6, 8);
+    
+    const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+    
+    const formatDate = `${date.getUTCDate().toString().padStart(2, '0')}/${(date.getUTCMonth() + 1).toString().padStart(2, '0')}/${date.getUTCFullYear()}`;
+    
+    return formatDate;
+}
 
 module.exports = {
     oneUser,
-    postgresData
+    postgresData,
+    birthDate,
+    enteredDate
 };

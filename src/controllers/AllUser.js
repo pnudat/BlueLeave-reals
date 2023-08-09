@@ -53,15 +53,11 @@ async function postgresData() {
       SELECT
         employee.employee_id,
         gender.gender_name,
-        date_of_birth.birth_date,
-        date_entered.entered_date,
         role.role_name,
         position.position_name
       FROM
         employee
       LEFT JOIN gender ON employee.gender_id = gender.gender_id
-      LEFT JOIN date_of_birth ON employee.birth_id = date_of_birth.birth_id
-      LEFT JOIN date_entered ON employee.entered_id = date_entered.entered_id
       LEFT JOIN role ON employee.role_id = role.role_id
       LEFT JOIN position ON employee.position_id = position.position_id;
     `;
@@ -84,6 +80,8 @@ function birthDate(ldapTime) {
 
   return `${day}/${month}/${year}`;
 }
+
+
 
 module.exports = {
   getAllUser,

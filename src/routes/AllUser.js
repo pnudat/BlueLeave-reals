@@ -27,8 +27,7 @@ router.get('/users', (req, res) => {
             
                 return {
                     id: entry.attributes.find(attr => attr.type === "employeeID")?.values[0],
-                    name: entry.attributes.find(attr => attr.type === "cn")?.values[0],
-                    lastname: entry.attributes.find(attr => attr.type === "sn")?.values[0],
+                    name: `${entry.attributes.find(attr => attr.type === "cn")?.values[0]} ${entry.attributes.find(attr => attr.type === "sn")?.values[0]}`,
                     company: entry.attributes.find(attr => attr.type === "company")?.values[0],
                     date_entered: formattedDate,
                     date_of_birth: birthDate(entry.attributes.find(attr => attr.type === "pwdLastSet")?.values[0]),
@@ -42,21 +41,11 @@ router.get('/users', (req, res) => {
             postgresData()
                 .then((result) => {
                     const pgData = result.map((employee) => {
-                        const startDate = new Date(employee.entered_date);
-                        const curentDate = new Date();
-                        const timeDiff = curentDate - startDate;
-                        const daysPassed = timeDiff / (1000 * 60 * 60 * 24);
-                        const yearsPassed = Math.floor(daysPassed / 365);
-                        const monthsPassed = Math.floor((daysPassed % 365) / 30);
-                        const daysRemaining = Math.floor((daysPassed % 365) % 30);
-
                         return {
                             id: employee.employee_id,
                             gender: employee.gender_name,
-                            birth_date: employee.birth_date,
-                            entered_date: ` ${yearsPassed} ปี ${monthsPassed} เดือน ${daysRemaining} วัน`,
-                            role_name: employee.role_name,
-                            position_name: employee.position_name,
+                            role: employee.role_name,
+                            position: employee.position_name,
                         };
                     });
                     res.json({ Data: ldapData, pgData });
