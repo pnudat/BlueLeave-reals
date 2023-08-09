@@ -1,5 +1,5 @@
 const ldap = require('ldapjs');
-const { Config, Pgconfig } = require('../config/Index');
+const { Config, Pgconfig } = require('../config/configData');
 const { Pool } = require('pg');
 
 const pgPool = new Pool(Pgconfig);

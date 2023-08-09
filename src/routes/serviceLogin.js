@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const {
-    BindToLdapServer,
+    connectLdap,
     FindUser
-} = require('../controllers/ServiceLogin');
+} = require('../controllers/serviceLogin');
 const jwt = require('jsonwebtoken');
 const {
     Config
-} = require('../config/Index');
+} = require('../config/configData');
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {     // res Authorization by username and password 
     // console.log(req.body);
     const username = req.body.username;
     const password = req.body.password;
@@ -19,12 +19,12 @@ router.post('/login', async (req, res) => {
     } else if (password == '' || password == undefined) {
         return res.status(401).send('Password is required');
     }
-    FindUser(username, (err, data) => {
+    FindUser(username, (err, data) => {     // find user by username in database
         if (err) {
             console.log('Error retrieving OUs:', err);
             res.status(401).send('Error retrieving OUs');
         } else {
-            BindToLdapServer(username, password, data[0])
+            connectLdap(username, password, data[0])    // connect to server
                 .then(() => {
                     console.log('Successfully bound to server');
 
@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
                     });
 
                     res.send({
-                        token
+                        token   // res token
                     });
 
                 })

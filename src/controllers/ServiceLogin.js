@@ -1,13 +1,13 @@
 const ldap = require('ldapjs');
 const {
     Config
-} = require('../config/Index');
+} = require('../config/configData');
 
 const client = ldap.createClient({
     url: Config.url,
 });
 
-const FindUser = (username, callback) => {
+const FindUser = (username, callback) => {  // find user by username for connecting
 
     const client = ldap.createClient({
         url: Config.url,
@@ -54,8 +54,8 @@ const FindUser = (username, callback) => {
     });
 }
 
-// bind to the server
-function BindToLdapServer(username, password, bindDN) {
+
+function connectLdap(_username, _password, __bindDN) { 
     return new Promise((resolve, reject) => {
         client.bind(Config.adminDN, Config.adminPass, (bindErr) => {
             if (bindErr) {
@@ -79,5 +79,5 @@ function BindToLdapServer(username, password, bindDN) {
 
 module.exports = {
     FindUser,
-    BindToLdapServer,
+    connectLdap,
 };

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { VerifyToken } = require('../midleware/Auth');
-const { getAllUser, postgresData, birthDate } = require('../controllers/AllUser');
+const { getAllUser, postgresData, birthDate } = require('../controllers/allUser');
 
 router.get('/users', (req, res) => {
     getAllUser(async (err, users) => {
@@ -37,7 +37,6 @@ router.get('/users', (req, res) => {
                 };
             });
 
-
             postgresData()
                 .then((result) => {
                     const pgData = result.map((employee) => {
@@ -48,7 +47,7 @@ router.get('/users', (req, res) => {
                             position: employee.position_name,
                         };
                     });
-                    res.json({ Data: ldapData, pgData });
+                    res.json({ Data: ldapData, pgData }); // data res to frontend
                 })
                 .catch((err) => {
                     console.error('Error:', err);

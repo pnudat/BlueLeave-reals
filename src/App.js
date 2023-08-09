@@ -4,9 +4,9 @@ const bodyParser = require('body-parser');
 //     readdirSync
 // } = require('fs');
 // const router = require('./routes/users');
-const Auth = require('./routes/Login');
-const Users = require('./routes/AllUser');
-const User = require('./routes/User');
+const Auth = require('./routes/serviceLogin');
+const Users = require('./routes/allUser');
+const User = require('./routes/userSetting');
 
 
 const app = express();

@@ -1,9 +1,9 @@
 const ldap = require('ldapjs');
-const { Config, Pgconfig } = require('../config/Index');
+const { Config, Pgconfig } = require('../config/configData');
 const { Pool } = require('pg');
 const pgPool = new Pool(Pgconfig);
 
-async function oneUser(EmployeeID) {
+async function oneUser(EmployeeID) {    //res to ldap database
     return new Promise((resolve, reject) => {
         const client = ldap.createClient({
             url: Config.url
@@ -54,7 +54,7 @@ async function oneUser(EmployeeID) {
     });
 }
 
-async function postgresData(EmployeeID) {
+async function postgresData(EmployeeID) {   // res to postgres database
     try {
         const query = `
         SELECT e.*, g.gender_name, r.role_name, p.position_name
@@ -73,7 +73,7 @@ async function postgresData(EmployeeID) {
     }
 }
 
-function birthDate(ldapTime) {
+function birthDate(ldapTime) {  // res to birthDate function (values: DD/MM/YYYY)
     const Timestamp = parseInt(ldapTime) / 10000000 - 11644473600;
     const dateObject = new Date(Timestamp * 1000);
 
@@ -84,7 +84,7 @@ function birthDate(ldapTime) {
     return `${day}/${month}/${year}`;
 }
 
-function enteredDate(ldapDate) {
+function enteredDate(ldapDate) {    // res to enteredDate function (values: DD/MM/YYYY)
     const year = ldapDate.slice(0, 4);
     const month = ldapDate.slice(4, 6);
     const day = ldapDate.slice(6, 8);
@@ -96,7 +96,7 @@ function enteredDate(ldapDate) {
     return formatDate;
 }
 
-async function updateRole(EmployeeID, role_id) {
+async function updateRole(EmployeeID, role_id) {    // update approver values
     try {
         if (role_id < 1 || role_id > 3) {
             throw new Error('Invalid role_id value. It must be between 1 and 3.');
@@ -109,6 +109,8 @@ async function updateRole(EmployeeID, role_id) {
         throw error;
     }
 }
+
+// update approver values
 
 module.exports = {
     oneUser,
