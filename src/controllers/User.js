@@ -1,5 +1,5 @@
 const ldap = require('ldapjs');
-const { Config,Pgconfig } = require('../config/Index');
+const { Config, Pgconfig } = require('../config/Index');
 const { Pool } = require('pg');
 
 const pgPool = new Pool(Pgconfig);
@@ -78,29 +78,44 @@ async function postgresData(EmployeeID) {
 function birthDate(ldapTime) {
     const Timestamp = parseInt(ldapTime) / 10000000 - 11644473600;
     const dateObject = new Date(Timestamp * 1000);
-  
+
     const day = dateObject.getUTCDate().toString().padStart(2, '0');
     const month = (dateObject.getUTCMonth() + 1).toString().padStart(2, '0');
     const year = dateObject.getUTCFullYear();
-  
+
     return `${day}/${month}/${year}`;
-  }
+}
 
 function enteredDate(ldapDate) {
     const year = ldapDate.slice(0, 4);
     const month = ldapDate.slice(4, 6);
     const day = ldapDate.slice(6, 8);
-    
+
     const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
-    
+
     const formatDate = `${date.getUTCDate().toString().padStart(2, '0')}/${(date.getUTCMonth() + 1).toString().padStart(2, '0')}/${date.getUTCFullYear()}`;
-    
+
     return formatDate;
+}
+
+async function updateRole(EmployeeID, role_id) {
+    try {
+        if (role_id < 1 || role_id > 3) {
+            throw new Error('Invalid role_id value. It must be between 1 and 3.');
+        }
+
+        const query = 'UPDATE employee SET role_id = $1 WHERE employee_id = $2';
+        await pgPool.query(query, [role_id, EmployeeID]);
+        return 'Role updated successfully.';
+    } catch (error) {
+        throw error;
+    }
 }
 
 module.exports = {
     oneUser,
     postgresData,
     birthDate,
-    enteredDate
+    enteredDate,
+    updateRole
 };
