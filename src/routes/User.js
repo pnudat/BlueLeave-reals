@@ -44,7 +44,7 @@ router.get('/user/:EmployeeID', async (req, res) => {
     }
 });
 
-router.put('/update/:EmployeeID', async (req, res) => {
+router.put('/user/update/:EmployeeID', async (req, res) => {
     const { EmployeeID } = req.params;
     const { role_id } = req.body;
 
