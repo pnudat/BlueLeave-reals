@@ -1,9 +1,7 @@
 const ldap = require('ldapjs');
 const { Config, Pgconfig } = require('../config/Index');
 const { Pool } = require('pg');
-
 const pgPool = new Pool(Pgconfig);
-
 
 async function oneUser(EmployeeID) {
     return new Promise((resolve, reject) => {
