@@ -1,4 +1,4 @@
-const ldap = require('ldapjs'); // connect to the Ldap server
+const ldap = require('ldapjs');
 const {
     Config
 } = require('../config/Index');
@@ -7,7 +7,7 @@ const client = ldap.createClient({
     url: Config.url,
 });
 
-const FindUser = (username, callback) => { // find user at Ldap server
+const FindUser = (username, callback) => {
 
     const client = ldap.createClient({
         url: Config.url,
@@ -64,7 +64,6 @@ function BindToLdapServer(username, password, bindDN) {
                 return;
             }
             // console.log(`Successfully bound to LDAP server: ${Config.url}`);
-            // Unbind or disconnect from the server
             client.unbind((unbindErr) => {
                 if (unbindErr) {
                     console.error(`LDAP unbind error for ${Config.url}:`, unbindErr);

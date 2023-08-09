@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { VerifyToken } = require('../midleware/Auth');
-const { getAllUser, postgresData,birthDate } = require('../controllers/AllUser');
+const { getAllUser, postgresData, birthDate } = require('../controllers/AllUser');
 
 router.get('/users', (req, res) => {
     getAllUser(async (err, users) => {
@@ -13,18 +13,18 @@ router.get('/users', (req, res) => {
                 const year = ldapDate.slice(0, 4);
                 const month = ldapDate.slice(4, 6);
                 const day = ldapDate.slice(6, 8);
-                
+
                 const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
                 const formattedDate = `${date.getUTCDate().toString().padStart(2, '0')}/${(date.getUTCMonth() + 1).toString().padStart(2, '0')}/${date.getUTCFullYear()}`;
                 const currentDate = new Date();
-            
+
                 const workExperience = currentDate - date;
                 const dateNow = new Date(workExperience);
-                
+
                 const years = dateNow.getUTCFullYear() - 1970;
                 const months = dateNow.getUTCMonth();
                 const days = dateNow.getUTCDate() - 1;
-            
+
                 return {
                     id: entry.attributes.find(attr => attr.type === "employeeID")?.values[0],
                     name: `${entry.attributes.find(attr => attr.type === "cn")?.values[0]} ${entry.attributes.find(attr => attr.type === "sn")?.values[0]}`,
@@ -35,8 +35,8 @@ router.get('/users', (req, res) => {
                     status: entry.attributes.find(attr => attr.type === "userAccountControl")?.values[0] === "66048" ? "active" : "inactive",
                     working_period: `${years} years ${months} months ${days} days`,
                 };
-            });            
-            
+            });
+
 
             postgresData()
                 .then((result) => {

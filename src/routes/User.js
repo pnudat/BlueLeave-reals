@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const { oneUser,postgresData,birthDate,enteredDate,updateRole } = require('../controllers/User')
+const { oneUser, postgresData, birthDate, enteredDate, updateRole } = require('../controllers/User')
 const {
     VerifyToken
 } = require('../midleware/Auth');
 
-router.get('/user/:EmployeeID', async (req, res) => { // Express route สำหรับแสดงข้อมูลผู้ใช้คนเดียว
+router.get('/user/:EmployeeID', async (req, res) => {
     const EmployeeID = req.params.EmployeeID;
 
     try {
@@ -47,14 +47,14 @@ router.get('/user/:EmployeeID', async (req, res) => { // Express route สำห
 router.put('/update/:EmployeeID', async (req, res) => {
     const { EmployeeID } = req.params;
     const { role_id } = req.body;
-  
+
     try {
-      const result = await updateRole(EmployeeID, role_id);
-      res.status(200).json({ message: result });
+        const result = await updateRole(EmployeeID, role_id);
+        res.status(200).json({ message: result });
     } catch (error) {
-      console.error('Error updating role:', error);
-      res.status(500).json({ error: 'An error occurred while updating role.' });
+        console.error('Error updating role:', error);
+        res.status(500).json({ error: 'An error occurred while updating role.' });
     }
-  });
-  
+});
+
 module.exports = router;

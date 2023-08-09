@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 
 const pgPool = new Pool(Pgconfig);
 
-function getAllUser(callback) { // Function to initialize and bind the LDAP client
+function getAllUser(callback) {
   const ldapClient = ldap.createClient({ url: Config.url });
 
   ldapClient.bind(Config.adminDN, Config.adminPass, (err) => {

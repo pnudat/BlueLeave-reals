@@ -19,7 +19,7 @@ router.post('/login', async (req, res) => {
     } else if (password == '' || password == undefined) {
         return res.status(401).send('Password is required');
     }
-    FindUser(username, (err, data) => { // Find and get ou user
+    FindUser(username, (err, data) => {
         if (err) {
             console.log('Error retrieving OUs:', err);
             res.status(401).send('Error retrieving OUs');
