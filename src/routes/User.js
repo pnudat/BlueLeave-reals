@@ -6,8 +6,6 @@ const {
     VerifyToken
 } = require('../midleware/Auth');
 
-router.use(bodyParser.json());
-
 router.get('/user/:EmployeeID', async (req, res) => { // Express route สำหรับแสดงข้อมูลผู้ใช้คนเดียว
     const EmployeeID = req.params.EmployeeID;
 
@@ -46,7 +44,7 @@ router.get('/user/:EmployeeID', async (req, res) => { // Express route สำห
     }
 });
 
-router.put('/update-role/:EmployeeID', async (req, res) => {
+router.put('/update/:EmployeeID', async (req, res) => {
     const { EmployeeID } = req.params;
     const { role_id } = req.body;
   
