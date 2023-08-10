@@ -3,7 +3,7 @@ const { Config, Pgconfig } = require('../config/configData');
 const { Pool } = require('pg');
 const pgPool = new Pool(Pgconfig);
 
-async function oneUser(EmployeeID) {    //res to ldap database
+async function getUser(EmployeeID) {
     return new Promise((resolve, reject) => {
         const client = ldap.createClient({
             url: Config.url
@@ -12,7 +12,7 @@ async function oneUser(EmployeeID) {    //res to ldap database
         client.bind(Config.adminDN, Config.adminPass, async (err) => {
             if (err) {
                 client.unbind();
-                reject(err);
+                return reject(err);
             }
 
             const searchOptions = {
@@ -22,31 +22,27 @@ async function oneUser(EmployeeID) {    //res to ldap database
             };
 
             try {
-                const entries = await new Promise((resolve, reject) => {
-                    const results = [];
-                    client.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
-                        if (searchErr) {
-                            client.unbind();
-                            reject(searchErr);
-                        }
+                const results = [];
+                client.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
+                    if (searchErr) {
+                        client.unbind();
+                        return reject(searchErr);
+                    }
 
-                        searchRes.on('searchEntry', (entry) => {
-                            results.push(entry.pojo);
-                        });
+                    searchRes.on('searchEntry', (entry) => {
+                        results.push(entry.pojo);
+                    });
 
-                        searchRes.on('error', (error) => {
-                            client.unbind();
-                            reject(error);
-                        });
+                    searchRes.on('error', (error) => {
+                        client.unbind();
+                        reject(error);
+                    });
 
-                        searchRes.on('end', () => {
-                            client.unbind();
-                            resolve(results);
-                        });
+                    searchRes.on('end', () => {
+                        client.unbind();
+                        resolve(results);
                     });
                 });
-
-                resolve(entries);
             } catch (error) {
                 reject(error);
             }
@@ -58,11 +54,12 @@ async function postgresData(EmployeeID) {   // res to postgres database
     try {
         const query = `
         SELECT e.*, g.gender_name, r.role_name, p.position_name
-        FROM employee e
-        JOIN gender g ON e.gender_id = g.gender_id
-        JOIN role r ON e.role_id = r.role_id
-        JOIN position p ON e.position_id = p.position_id
-        WHERE e.employee_id = $1`;
+            FROM employee e
+            JOIN gender g ON e.gender_id = g.gender_id
+            JOIN role r ON e.role_id = r.role_id
+            JOIN position p ON e.position_id = p.position_id
+            WHERE e.employee_id = $1
+        `;
         const values = [EmployeeID];
 
         const result = await pgPool.query(query, values);
@@ -110,12 +107,79 @@ async function updateRole(EmployeeID, role_id) {    // update approver values
     }
 }
 
-// update approver values
+async function ldapApprove(Approver) {
+    return new Promise((resolve, reject) => {
+        const client = ldap.createClient({
+            url: Config.url
+        });
+
+        client.bind(Config.adminDN, Config.adminPass, async (err) => {
+            if (err) {
+                client.unbind();
+                return reject(err);
+            }
+
+            const searchOptions = {
+                filter: `(cn=${Approver})`,
+                scope: 'sub',
+                attributes: ['name', 'company', 'department', 'employeeID', ],
+            };
+
+            try {
+                const results = [];
+                client.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
+                    if (searchErr) {
+                        client.unbind();
+                        return reject(searchErr);
+                    }
+
+                    searchRes.on('searchEntry', (entry) => {
+                        results.push(entry.pojo);
+                    });
+
+                    searchRes.on('error', (error) => {
+                        client.unbind();
+                        reject(error);
+                    });
+
+                    searchRes.on('end', () => {
+                        client.unbind();
+                        resolve(results);
+                    });
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    });
+}
+
+async function pgApprove(EmployeeID) {   // res to postgres database
+    try {
+        const query = `
+        SELECT e.*, g.gender_name, r.role_name, p.position_name
+            FROM employee e
+            JOIN gender g ON e.gender_id = g.gender_id
+            JOIN role r ON e.role_id = r.role_id
+            JOIN position p ON e.position_id = p.position_id
+            WHERE e.employee_id = $1
+        `;
+        const values = [EmployeeID];
+
+        const result = await pgPool.query(query, values);
+
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
-    oneUser,
+    getUser,
     postgresData,
     birthDate,
     enteredDate,
-    updateRole
+    updateRole,
+    ldapApprove,
+    pgApprove,
 };

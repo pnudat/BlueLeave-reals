@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { oneUser, postgresData, birthDate, enteredDate, updateRole } = require('../controllers/userSetting')
+const { getUser, postgresData, birthDate, enteredDate, updateRole, ldapApprove, pgApprove } = require('../controllers/userSetting')
 const {
     VerifyToken
 } = require('../midleware/Auth');
@@ -10,7 +10,7 @@ router.get('/user/:EmployeeID', async (req, res) => {
 
     try {
         const [ldapData, pgData] = await Promise.all([
-            oneUser(EmployeeID),
+            getUser(EmployeeID),
             postgresData(EmployeeID),
         ]);
 
@@ -56,42 +56,57 @@ router.put('/user/update/:EmployeeID', async (req, res) => {
     }
 });
 
-router.put('/user/update/:EmployeeID', async (req, res) => {
-    const EmployeeID = req.params.EmployeeID;
+router.put('/user/update/approver', async (req, res) => {
+    const EmployeeID = req.params.employee_id;
+    const Approver = req.body;
 
     try {
         const [ldapData, pgData] = await Promise.all([
-            oneUser(EmployeeID),
-            postgresData(EmployeeID),
+            ldapApprove(Approver),
+            pgApprove(EmployeeID),
         ]);
 
-        if (ldapData.length > 0) {
-            const ldapEntry = ldapData[0];
-            const ldapFormatData = {
-                id: ldapEntry.attributes.find(attr => attr.type === "employeeID")?.values[0],
-                name: ldapEntry.attributes.find(attr => attr.type === "cn")?.values[0],
-                lastname: ldapEntry.attributes.find(attr => attr.type === "sn")?.values[0],
-                username: ldapEntry.attributes.find(attr => attr.type === "sAMAccountNamen")?.values[0],
-                date_of_birth: birthDate(ldapEntry.attributes.find(attr => attr.type === "pwdLastSet")?.values[0]),
-                date_entered: enteredDate(ldapEntry.attributes.find(attr => attr.type === "whenCreated")?.values[0]),
-                company: ldapEntry.attributes.find(attr => attr.type === "company")?.values[0],
-                email: ldapEntry.attributes.find(attr => attr.type === "mail")?.values[0],
-            };
+        console.log(ldapData);
+        console.log(pgData);
 
-            const pgFormatData = {
-                id: pgData.employee_id,
-                gender: pgData.gender_name,
-                role: pgData.role_name,
-                position: pgData.position_name,
-            };
+        if (ldapData.length === 0) {
+            return res.status(404).json({ error: 'Data Entry Not Found' });
+        }
 
-            res.json({ ldapData: ldapFormatData, postgresData: pgFormatData });
+        const approveEntry = ldapData[0];
+        const approveID = approveEntry.attributes.find(attr => attr.type === "employeeID")?.values[0];
+        const approverName = approveEntry.attributes.find(attr => attr.type === "name")?.values[0];
+        const approverCompany = approveEntry.attributes.find(attr => attr.type === "company")?.values[0];
+        const approverDepartment = approveEntry.attributes.find(attr => attr.type === "department")?.values[0];
+        const pgID = pgData.employee_id;
+        const pgRole = pgData.name_role;
+
+        if (approveID !== pgID) {
+            return console.log('EmployeeID is not true');
+        }
+
+        if (pgRole === 3) {
+            // Role is admin, allow approval
+            if (approverCompany === "Commserv Siam Ltd." && approverDepartment === approverDepartment) {
+                return res.json({ Approver: approverName });
+            } else {
+                return console.log(`Employee does not have approval rights for this company/${approverDepartment}`);
+            }
+        } else if (pgRole === 2) {
+            if (approverCompany === "Commserv Siam Ltd." && approverDepartment === approverDepartment) {
+                return res.json({ Approver: approverName });
+            } else {
+                return console.log(`Employee does not have approval rights for this company/${approverDepartment}`);
+            }
         } else {
-            res.status(404).json({ error: 'Data Entry Not Found' });
+            // Role is employee without approval rights
+            return console.log('Role cannot approve because role is employee');
         }
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
+
 });
 
 module.exports = router;

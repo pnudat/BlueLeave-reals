@@ -50,16 +50,16 @@ async function postgresData() {
 
 
     const query = `
-      SELECT
-        employee.employee_id,
-        gender.gender_name,
-        role.role_name,
-        position.position_name
-      FROM
-        employee
-      LEFT JOIN gender ON employee.gender_id = gender.gender_id
-      LEFT JOIN role ON employee.role_id = role.role_id
-      LEFT JOIN position ON employee.position_id = position.position_id;
+    SELECT
+      employee.employee_id,
+      gender.gender_name,
+      role.role_name,
+      position.position_name
+    FROM
+      employee
+    LEFT JOIN gender ON employee.gender_id = gender.gender_id
+    LEFT JOIN role ON employee.role_id = role.role_id
+    LEFT JOIN position ON employee.position_id = position.position_id;
     `;
 
     const { rows } = await pgPool.query(query);
