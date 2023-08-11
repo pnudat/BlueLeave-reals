@@ -154,19 +154,14 @@ async function ldapApprove(Approver) {
     });
 }
 
-async function pgApprove(EmployeeID) {   // res to postgres database
+async function pgApprove() {   // res to postgres database
     try {
         const query = `
-        SELECT e.*, g.gender_name, r.role_name, p.position_name
-            FROM employee e
-            JOIN gender g ON e.gender_id = g.gender_id
-            JOIN role r ON e.role_id = r.role_id
-            JOIN position p ON e.position_id = p.position_id
-            WHERE e.employee_id = $1
+        SELECT employee_id,role_id
+        FROM employee
         `;
-        const values = [EmployeeID];
 
-        const result = await pgPool.query(query, values);
+        const result = await pgPool.query(query);
 
         return result.rows[0];
     } catch (error) {
