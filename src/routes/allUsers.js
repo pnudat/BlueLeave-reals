@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { VerifyToken } = require('../midleware/Auth');
-const { getAllUser, postgresData, birthDate } = require('../controllers/allUsers');
+const { VerifyToken } = require('../midlewares/Auth');
+const { birthDate } = require('../helpers/helpers');
+const { getAllUser, postgresData } = require('../controllers/allUsers');
 
 router.get('/users', (req, res) => {
     getAllUser(async (err, users) => {
@@ -38,8 +39,8 @@ router.get('/users', (req, res) => {
             });
 
             postgresData()
-                .then((result) => {
-                    const pgData = result.map((employee) => {
+                .then((pgResult) => {
+                    const pgData = pgResult.map((employee) => {
                         return {
                             id: employee.employee_id,
                             gender: employee.gender_name,
@@ -47,11 +48,28 @@ router.get('/users', (req, res) => {
                             position: employee.position_name,
                         };
                     });
-                    res.json({ Data: ldapData, pgData }); // data res to frontend
+                    const combinedData = ldapData.map((users) => {
+                        const PGUser = pgData.find((pgResult) => pgResult.id === users.id);
+                        return {
+                            id: users.id,
+                            name: users.name,
+                            company: users.company,
+                            date_entered: users.date_entered,
+                            date_of_birth: users.date_of_birth,
+                            email: users.email,
+                            status: users.status,
+                            working_period: users.working_period,
+                            gender: PGUser ? PGUser.gender : null,
+                            role: PGUser ? PGUser.role : null,
+                            position: PGUser ? PGUser.position : null,
+                        };
+                    });
+
+                    res.json({ CombinedData: combinedData });
                 })
-                .catch((err) => {
-                    console.error('Error:', err);
-                    res.status(500).json({ error: 'Not found data' });
+                .catch((pgErr) => {
+                    console.error('Error:', pgErr);
+                    res.status(500).json({ error: 'Error fetching PostgreSQL data' });
                 });
         }
     });
