@@ -3,7 +3,7 @@ const router = express.Router();
 const { getUser, postgresData,updateRole, } = require('../controllers/userSetting')
 const {
     VerifyToken
-} = require('../midlewares/Auth');
+} = require('../middlewares/Auth');
 const { enteredDate, birthDate} = require('../helpers/helpers');
 
 router.get('/user/:EmployeeID', async (req, res) => {

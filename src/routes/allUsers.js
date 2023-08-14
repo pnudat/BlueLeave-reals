@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { VerifyToken } = require('../midlewares/Auth');
+const { VerifyToken } = require('../middlewares/Auth');
 const { birthDate } = require('../helpers/helpers');
 const { getAllUser, postgresData } = require('../controllers/allUsers');
 
@@ -39,8 +39,8 @@ router.get('/users', (req, res) => {
             });
 
             postgresData()
-                .then((pgResult) => {
-                    const pgData = pgResult.map((employee) => {
+                .then((result) => {
+                    const pgData = result.map((employee) => {
                         return {
                             id: employee.employee_id,
                             gender: employee.gender_name,
@@ -49,7 +49,7 @@ router.get('/users', (req, res) => {
                         };
                     });
                     const combinedData = ldapData.map((users) => {
-                        const PGUser = pgData.find((pgResult) => pgResult.id === users.id);
+                        const PGUser = pgData.find((result) => result.id === users.id);
                         return {
                             id: users.id,
                             name: users.name,
@@ -65,7 +65,7 @@ router.get('/users', (req, res) => {
                         };
                     });
 
-                    res.json({ CombinedData: combinedData });
+                    res.json({ Data: combinedData });
                 })
                 .catch((pgErr) => {
                     console.error('Error:', pgErr);
