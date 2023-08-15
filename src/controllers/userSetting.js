@@ -53,12 +53,17 @@ async function getUser(EmployeeID) {
 async function postgresData(EmployeeID) {   // res to postgres database
     try {
         const query = `
-        SELECT e.*, g.gender_name, r.role_name, p.position_name
-            FROM employee e
-            JOIN gender g ON e.gender_id = g.gender_id
-            JOIN role r ON e.role_id = r.role_id
-            JOIN position p ON e.position_id = p.position_id
-            WHERE e.employee_id = $1
+        SELECT
+            employee.employee_id,
+            gender.gender_name,
+            role.role_name,
+            position.position_name
+        FROM
+            employee
+        LEFT JOIN gender ON employee.gender_id = gender.gender_id
+        LEFT JOIN role ON employee.role_id = role.role_id
+        LEFT JOIN position ON employee.position_id = position.position_id
+        WHERE employee_id = $1
         `;
         const values = [EmployeeID];
 

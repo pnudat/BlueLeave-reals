@@ -21,7 +21,32 @@ function enteredDate(ldapDate) {    // res to enteredDate function (values: DD/M
     return formatDate;
 }
 
+function calWorkExp(ldapDate) {
+    const year = ldapDate.slice(0, 4);
+    const month = ldapDate.slice(4, 6);
+    const day = ldapDate.slice(6, 8);
+
+    const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+    const formattedDate = `${date.getUTCDate().toString().padStart(2, '0')}/${(date.getUTCMonth() + 1).toString().padStart(2, '0')}/${date.getUTCFullYear()}`;
+    const currentDate = new Date();
+
+    const workExperience = currentDate - date;
+    const dateNow = new Date(workExperience);
+
+    const years = dateNow.getUTCFullYear() - 1970;
+    const months = dateNow.getUTCMonth();
+    const days = dateNow.getUTCDate() - 1;
+
+    return {
+        formattedDate: formattedDate,
+        years: years,
+        months: months,
+        days: days
+    };
+}
+
 module.exports = {
     birthDate,
     enteredDate,
+    calWorkExp,
   };

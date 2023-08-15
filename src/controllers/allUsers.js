@@ -59,7 +59,8 @@ async function postgresData() {
       employee
     LEFT JOIN gender ON employee.gender_id = gender.gender_id
     LEFT JOIN role ON employee.role_id = role.role_id
-    LEFT JOIN position ON employee.position_id = position.position_id;
+    LEFT JOIN position ON employee.position_id = position.position_id
+    ORDER BY employee.employee_id ASC;
     `;
 
     const { rows } = await pgPool.query(query);
