@@ -7,11 +7,11 @@ async function leavetypeData() {
     try {
         const query = `
         SELECT
-            leave_type.leave_type_id,
-            leave_type.leave_name,
-            leave_type.working_period,
-            leave_type.days,
-            gender.gender_name
+                leave_type.leave_type_id,
+                leave_type.leave_name,
+                leave_type.working_period,
+                leave_type.days,
+                gender.gender_name
         FROM
             leave_type
         LEFT JOIN gender ON leave_type.gender_id = gender.gender_id

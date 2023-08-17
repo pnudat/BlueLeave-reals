@@ -1,12 +1,11 @@
 const express = require('express');
-const router = express.Router();
-const { getUser, postgresData,updateRole, } = require('../controllers/userSetting')
-const {
-    VerifyToken
-} = require('../middlewares/Auth');
-const { enteredDate, birthDate} = require('../helpers/helpers');
+const { getUser, postgresData,updateRole, } = require('../../controllers/userSetting')
+const { VerifyToken } = require('../../middlewares/Auth');
+const { enteredDate, birthDate} = require('../../helpers/helpers');
 
-router.get('/user/:EmployeeID', async (req, res) => {
+const routers = express.Router();
+
+routers.get('/user/:EmployeeID', async (req, res) => {
     const EmployeeID = req.params.EmployeeID;
 
     try {
@@ -39,7 +38,7 @@ router.get('/user/:EmployeeID', async (req, res) => {
     }
 });
 
-router.put('/user/update/:EmployeeID', async (req, res) => { 
+routers.put('/user/update/:EmployeeID', async (req, res) => { 
     const { EmployeeID } = req.params;
     const { role_id } = req.body;
 
@@ -56,4 +55,4 @@ router.put('/user/update/:EmployeeID', async (req, res) => {
 
 // find Approver
 
-module.exports = router;
+module.exports = routers;

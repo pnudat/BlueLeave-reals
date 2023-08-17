@@ -1,10 +1,11 @@
 const express = require('express');
-const router = express.Router();
-const { VerifyToken } = require('../middlewares/Auth');
-const { birthDate,calWorkExp } = require('../helpers/helpers');
-const { getAllUser, postgresData } = require('../controllers/allUsers');
+const { VerifyToken } = require('../../middlewares/Auth');
+const { birthDate,calWorkExp } = require('../../helpers/helpers');
+const { getAllUser, postgresData } = require('../../controllers/allUsers');
 
-router.get('/users', (req, res) => {
+const routers = express.Router();
+
+routers.get('/users', (req, res) => {
     getAllUser(async (err, users) => {
         if (err) {
             return res.status(500).json({ error: 'Error fetching users from LDAP' });
@@ -49,4 +50,4 @@ router.get('/users', (req, res) => {
     });
 });
 
-module.exports = router;
+module.exports = routers;
