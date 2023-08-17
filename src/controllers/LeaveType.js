@@ -7,7 +7,7 @@ async function leavetypeData() {
     try {
         const query = `
         SELECT
-            leave_type.leave_id,
+            leave_type.leave_type_id,
             leave_type.leave_name,
             leave_type.working_period,
             leave_type.days,
@@ -15,7 +15,8 @@ async function leavetypeData() {
         FROM
             leave_type
         LEFT JOIN gender ON leave_type.gender_id = gender.gender_id
-        ORDER BY leave_type.leave_id ASC;
+        WHERE is_delete = FALSE
+        ORDER BY leave_type.leave_type_id ASC;
         `;
 
         const { rows } = await pgPool.query(query);
@@ -28,7 +29,7 @@ async function leavetypeData() {
 
 async function leavetypeCreate(leavetype_id, leavetype_name, working_period, days, gender_id) {
     try {
-        const query = `INSERT INTO leave_type(leave_id, leave_name, working_period, days, gender_id) VALUES ($1, $2, $3, $4, $5);`;
+        const query = `INSERT INTO leave_type(leave_type_id, leave_name, working_period, days, gender_id) VALUES ($1, $2, $3, $4, $5);`;
         await pgPool.query(query,[leavetype_id, leavetype_name, working_period, days, gender_id]);
         return 'Leave type created successfully';
     } catch (err) {
@@ -42,7 +43,7 @@ async function leavetypeUpdate(leavetype_name, working_period, days, gender_id, 
         const query = `
         UPDATE public.leave_type
         SET leave_name = $1, working_period = $2, days = $3, gender_id = $4
-        WHERE leave_id = $5;
+        WHERE leave_type_id = $5;
         `;
 
         await pgPool.query(query,[`${leavetype_name}`, working_period, days, gender_id, leavetype_id]);
@@ -56,7 +57,9 @@ async function leavetypeUpdate(leavetype_name, working_period, days, gender_id, 
 async function leavetypeDelete(leavetype_id) {
     try {
         const query = `
-        DELETE FROM public.leave_type WHERE leave_id = $1;
+        UPDATE leave_type
+        SET is_delete = TRUE
+        WHERE leave_type_id = $1;
         `;
         await pgPool.query(query, [leavetype_id]);
         return 'Leave type deleted successfully';

@@ -9,6 +9,7 @@ router.get('/users', (req, res) => {
         if (err) {
             return res.status(500).json({ error: 'Error fetching users from LDAP' });
         } else {
+            
             const ldapData = users.map((entry) => {
                 const ldapDate = entry.attributes.find(attr => attr.type === "whenCreated")?.values[0];
                 const result = calWorkExp(ldapDate);
