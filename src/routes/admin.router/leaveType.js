@@ -1,5 +1,4 @@
 const express = require('express');
-const { VerifyToken } = require('../../middlewares/Auth');
 const { leavetypeData, leavetypeCreate, leavetypeUpdate, leavetypeDelete } = require('../../controllers/leaveType');
 
 const routers = express.Router();

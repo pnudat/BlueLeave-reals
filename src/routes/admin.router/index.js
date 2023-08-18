@@ -2,6 +2,7 @@ const express = require('express');
 const allUsers = require('./allUsers');
 const leaveType = require('./leaveType');
 const userSetting = require('./userSetting');
+const { VerifyToken } = require('../../middlewares');
 
 const router = express.Router();
 

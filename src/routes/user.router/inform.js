@@ -1,10 +1,6 @@
 const express = require('express');
 const moment = require('moment');
-const { getUser,
-    informData,
-    informCreate,
-    sendLineNotify,
-    formatDate } = require('../../controllers/informService');
+const { getUser, informData, informCreate, sendLineNotify, formatDate } = require('../../controllers/informService');
 
 const routers = express.Router();
 

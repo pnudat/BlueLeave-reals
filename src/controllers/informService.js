@@ -1,7 +1,7 @@
 const axios = require('axios');
 const ldap = require('ldapjs');
 const { Pool } = require('pg');
-const { Pgconfig } = require('../configs/configData');
+const { Pgconfig } = require('../configs');
 
 const pgPool = new Pool(Pgconfig);
 

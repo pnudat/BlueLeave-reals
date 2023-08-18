@@ -1,7 +1,7 @@
 const express = require('express');
 const { getUser, postgresData,updateRole, } = require('../../controllers/userSetting')
-const { VerifyToken } = require('../../middlewares/Auth');
-const { enteredDate, birthDate} = require('../../helpers/helpers');
+const { VerifyToken } = require('../../middlewares');
+const { enteredDate, birthDate} = require('../../helpers');
 
 const routers = express.Router();
 

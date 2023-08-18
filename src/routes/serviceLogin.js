@@ -7,7 +7,7 @@ const {
 const jwt = require('jsonwebtoken');
 const {
     Config
-} = require('../configs/configData');
+} = require('../configs');
 
 router.post('/login', async (req, res) => {     // res Authorization by username and password 
     // console.log(req.body);

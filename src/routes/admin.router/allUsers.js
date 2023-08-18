@@ -1,6 +1,6 @@
 const express = require('express');
-const { VerifyToken } = require('../../middlewares/Auth');
-const { birthDate,calWorkExp } = require('../../helpers/helpers');
+const { VerifyToken } = require('../../middlewares');
+const { birthDate,calWorkExp } = require('../../helpers');
 const { getAllUser, postgresData } = require('../../controllers/allUsers');
 
 const routers = express.Router();
