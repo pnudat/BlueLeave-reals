@@ -1,13 +1,15 @@
 const express = require('express');
-const allUsers = require('./allUsers');
-const leaveType = require('./leaveType');
-const userSetting = require('./userSetting');
-const { VerifyToken } = require('../../middlewares');
+const admin = require('../../controllers');
 
-const router = express.Router();
+const routers = express.Router();
 
-router.use('/admin', allUsers);
-router.use('/admin', leaveType);
-router.use('/admin', userSetting);
+routers.get('/users', admin.dataForAdmin.getUsersData);
+routers.get('/user/:EmployeeID', admin.dataForAdmin.getEmployeeID);
+routers.put('/user/:EmployeeID', admin.dataForAdmin.updateRole);
 
-module.exports = router;
+routers.get('/leavetypes', admin.dataForAdmin.getAllLeaveTypes);
+routers.post('/leavetypes', admin.dataForAdmin.createLeaveType);
+routers.put('/leavetype/:leavetype_id', admin.dataForAdmin.updateLeaveType);
+routers.delete('/leavetype/:leavetype_id', admin.dataForAdmin.deleteLeaveType);
+
+module.exports = routers;

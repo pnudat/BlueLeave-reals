@@ -1,8 +1,9 @@
 const express = require('express');
-const inform = require('./inform');
+const user = require('../../controllers');
 
-const router = express.Router();
+const routers = express.Router();
 
-router.use('/user', inform);
+routers.get('/inform/:id', user.dataForUser.getInformData);
+routers.post('/inform/:id', user.dataForUser.sendLineNotify);
 
-module.exports = router;
+module.exports = routers;

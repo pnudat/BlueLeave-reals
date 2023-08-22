@@ -1,12 +1,12 @@
 const express = require('express');
-const adminRoute = require('./admin.router/index');
-const usersRoute = require('./user.router/index');
-const Auth = require('./serviceLogin');
+const adminRoute = require('./admin.router');
+const usersRoute = require('./user.router');
+const middlewares = require('../middlewares');
 
 const route = express.Router();
 
-route.use('/api', Auth)
-route.use('/api', adminRoute);
+route.post('/login',middlewares.authenticate);
+route.use('/admin', adminRoute);
 route.use('/api', usersRoute);
 
 

@@ -1,9 +1,57 @@
 const ldap = require('ldapjs');
-const { Config, Pgconfig } = require('../configs');
+const { Config, Pgconfig } = require('../../configs');
 const { Pool } = require('pg');
+
 const pgPool = new Pool(Pgconfig);
 
-async function getUser(EmployeeID) {
+async function getEmployeeID(req, res) {
+    const EmployeeID = req.params.EmployeeID;
+
+    try {
+        const [ldapData, pgData] = await Promise.all([
+            getLdapData(EmployeeID),
+            getPostgresData(EmployeeID),
+        ]);
+
+        if (ldapData.length > 0) {
+            const ldapEntry = ldapData[0];
+            const ldapFormatData = {
+                id: ldapEntry.attributes.find(attr => attr.type === "employeeID")?.values[0],
+                name: ldapEntry.attributes.find(attr => attr.type === "cn")?.values[0],
+                lastname: ldapEntry.attributes.find(attr => attr.type === "sn")?.values[0],
+                username: ldapEntry.attributes.find(attr => attr.type === "sAMAccountName")?.values[0],
+                gender: pgData.gender_name,
+                date_of_birth: birthDate(ldapEntry.attributes.find(attr => attr.type === "pwdLastSet")?.values[0]),
+                date_entered: enteredDate(ldapEntry.attributes.find(attr => attr.type === "whenCreated")?.values[0]),
+                company: ldapEntry.attributes.find(attr => attr.type === "company")?.values[0],
+                role: pgData.role_name,
+                position: pgData.position_name,
+                email: ldapEntry.attributes.find(attr => attr.type === "mail")?.values[0],                                                                                                                                                      
+            };
+            res.json({ Data: ldapFormatData });
+        } else {
+            res.status(404).json({ error: 'Data Entry Not Found' });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+async function updateRole(req, res) {
+    const { EmployeeID } = req.params;
+    const { role_id } = req.body;
+
+    try {
+        const result = await updateRoleInPostgres(EmployeeID, role_id); // Assuming you have an updateRoleInDatabase function
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error('Error updating role:', error);
+        res.status(500).json({ error: 'An error occurred while updating role.' });
+    }
+}
+
+async function getLdapData(EmployeeID) {
     return new Promise((resolve, reject) => {
         const client = ldap.createClient({
             url: Config.url
@@ -50,7 +98,7 @@ async function getUser(EmployeeID) {
     });
 }
 
-async function postgresData(EmployeeID) {   // res to postgres database
+async function getPostgresData(EmployeeID) {   // res to postgres database
     try {
         const query = `
         SELECT
@@ -75,7 +123,7 @@ async function postgresData(EmployeeID) {   // res to postgres database
     }
 }
 
-async function updateRole(EmployeeID, role_id) {    // update approver values
+async function updateRoleInPostgres(EmployeeID, role_id) {    // update approver values
     try {
         if (role_id < 1 || role_id > 3) {
             throw new Error('Invalid role_id value. It must be between 1 and 3.');
@@ -102,7 +150,7 @@ function getApprover(callback) {
       const searchOptions = {
         scope: 'sub',
         filter: '(employeeID=*)',
-        attributes: ['cn', 'sn', 'company', 'mail', 'whenCreated', 'pwdLastSet', 'userAccountControl', 'employeeID']
+        attributes: ['cn', 'sn', 'company', 'mail', 'whenCreated', 'pwdLastSet', '', 'userAccountControl', 'employeeID']
       };
   
       ldapClient.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
@@ -132,7 +180,6 @@ function getApprover(callback) {
   }
 
 module.exports = {
-    getUser,
-    postgresData,
-    updateRole,
+    getEmployeeID,
+    updateRole
 };

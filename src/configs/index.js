@@ -1,4 +1,3 @@
 
 
-
-module.exports = { Config,Pgconfig };
+module.exports = { Config,Pgconfig,Key };
