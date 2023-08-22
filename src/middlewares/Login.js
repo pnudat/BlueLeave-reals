@@ -1,4 +1,4 @@
-const { connectLdap,FindUser } = require('../controllers/serviceLogin');
+const { connectLdap,FindUser } = require('./serviceLogin');
 const jwt = require('jsonwebtoken');
 const { Key } = require('../configs');
 
