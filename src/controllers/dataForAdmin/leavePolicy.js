@@ -5,11 +5,12 @@ const pool = new Pool(Pgconfig);
 
 async function savePolicy(req, res) {
     try {
-        const filename = req.file.filename;
+        // const filename = req.file;
+        console.log(req.body)
+        console.log(req.file)
+        // const policy = await policySave(filename)
 
-        const policy = await policySave(filename)
-
-        res.send(policy)
+        res.send("filename")
     } catch (err) {
         console.error('Error:', err);
         res.status(500).json({ error: 'Internal server error' });
