@@ -1,11 +1,14 @@
 const { Pgconfig } = require('../../configs');
 const { Pool } = require('pg');
+const { holidayDate } = require('../../helpers');
 
 const pgPool = new Pool(Pgconfig);
 
 async function allPublicHoliday(req, res) { // Get all leave types
     try {
         const data = await holidayData();
+        
+
         res.status(200).json(data);
     } catch (err) {
         console.error('Error:', err);
@@ -15,7 +18,7 @@ async function allPublicHoliday(req, res) { // Get all leave types
 
 async function createPublicHoliday(req, res) { // Create a new leave type
     try {
-        const holiday_id = req.body.leavetype_id;
+        const holiday_id = req.params.holiday_id;
         const holiday_date = req.body.holiday_date;
         const description = req.body.description;
         const status = req.body.status;
@@ -34,7 +37,7 @@ async function createPublicHoliday(req, res) { // Create a new leave type
 
 async function updatePublicHoliday(req, res) {
     try {
-        const holiday_id = req.body.leavetype_id;
+        const holiday_id = req.params.holiday_id;
         const holiday_date = req.body.holiday_date;
         const description = req.body.description;
         const status = req.body.status;

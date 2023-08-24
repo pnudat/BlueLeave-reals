@@ -21,7 +21,7 @@ async function deletePolicy(req, res) {
     try {
         const policy_id = req.params.policy_id;
         const remove = await policyDelete(policy_id);
-        await fs.unlink('../../upload/fileExcel/' + remove.file, (err)=>{
+        await fs.unlink('/src/upload/filePolicy' + remove.file, (err)=>{
             if (err) {
                 console.log(err);
             }else{

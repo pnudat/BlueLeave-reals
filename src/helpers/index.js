@@ -53,9 +53,22 @@ async function formatDate(informDate) {
     return formattedDate;
 }
 
+function holidayDate(holidayDate) {    // res to enteredDate function (values: DD/MM/YYYY)
+    const year = holidayDate.slice(0, 4);
+    const month = holidayDate.slice(4, 6);
+    const day = holidayDate.slice(6, 8);
+
+    const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
+
+    const formatDate = `${date.getUTCDate().toString().padStart(2, '0')}/${(date.getUTCMonth() + 1).toString().padStart(2, '0')}/${date.getUTCFullYear()}`;
+
+    return formatDate;
+}
+
 module.exports = {
     birthDate,
     enteredDate,
     calWorkExp,
     formatDate,
+    holidayDate,
   };

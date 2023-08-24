@@ -10,8 +10,8 @@ async function getUsersData(req, res) {
       const ldapUsers = await getAllUser();
       const pgEmployees = await postgresData();
 
-      // console.log(ldapUsers)
-      // console.log(pgEmployees)
+      console.log(ldapUsers)
+      console.log(pgEmployees)
 
       const mappedData = ldapUsers.map((entry) => {
           const ldapDate = entry.attributes.find(attr => attr.type === "whenCreated")?.values[0];

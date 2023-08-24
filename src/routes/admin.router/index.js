@@ -13,7 +13,12 @@ routers.post('/leavetypes', admin.dataForAdmin.createLeaveType);
 routers.put('/leavetype/:leavetype_id', admin.dataForAdmin.updateLeaveType);
 routers.delete('/leavetype/:leavetype_id', admin.dataForAdmin.deleteLeaveType);
 
-routers.get('/policy', express.static('filePolicy'));
+routers.get('/publicHoliday', admin.dataForAdmin.allPublicHoliday);
+routers.post('/publicHoliday', admin.dataForAdmin.createPublicHoliday);
+routers.put('/publicHoliday/:holiday_id', admin.dataForAdmin.updatePublicHoliday);
+routers.delete('/publicHoliday/:holiday_id', admin.dataForAdmin.deletePublicHoliday);
+
+routers.get('/policy', express.static('/src/upload/filePolicy'));
 routers.post('/policy', upload,admin.dataForAdmin.savePolicy);
 routers.delete('/policy/:policy_id', admin.dataForAdmin.deletePolicy);
 
