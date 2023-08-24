@@ -1,13 +1,19 @@
 const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './filePDF')
+    destination: (req, file, callback) => {
+        const policyDir = './src/upload/filePolicy/';
+        if (!fs.existsSync(policyDir)) {
+            fs.mkdirSync(policyDir);
+        }
+        callback(null, policyDir);
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.fieldname + '-' + uniqueSuffix)
-    }
-})
+        cb(null, 'Policy' + uniqueSuffix + file.originalname)
+      }
+});
 
 exports.upload = multer({ storage: storage }).single('file')

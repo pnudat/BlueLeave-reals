@@ -5,12 +5,12 @@ const pool = new Pool(Pgconfig);
 
 async function savePolicy(req, res) {
     try {
-        // const filename = req.file;
-        console.log(req.body)
-        console.log(req.file)
-        // const policy = await policySave(filename)
+        const data = req.body;
+        data.file = req.file.filename;
 
-        res.send("filename")
+        const policy = await policySave(data)
+
+        res.send(policy)
     } catch (err) {
         console.error('Error:', err);
         res.status(500).json({ error: 'Internal server error' });
@@ -36,10 +36,10 @@ async function deletePolicy(req, res) {
     }
 }
 
-async function policySave(filename) {
+async function policySave(data) {
     try {
-        const query = `INSERT INTO file(filename) VALUES ($1);`;
-        await pool.query(query, [filename]);
+        const query = `INSERT INTO files(filename) VALUES ($1);`;
+        await pool.query(query, [data]);
         return 'Leave Policy created successfully';
     } catch (err) {
         console.error('Error executing query:', err);
