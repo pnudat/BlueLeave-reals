@@ -45,8 +45,17 @@ function calWorkExp(ldapDate) {
     };
 }
 
+async function formatDate(informDate) {
+
+    const [day, month, year] = informDate.split('/');
+    const formattedDate = `${year}/${month}/${day}`;
+
+    return formattedDate;
+}
+
 module.exports = {
     birthDate,
     enteredDate,
     calWorkExp,
+    formatDate,
   };

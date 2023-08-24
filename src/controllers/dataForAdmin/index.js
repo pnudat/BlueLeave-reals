@@ -1,6 +1,7 @@
 const { getUsersData } = require('./allUsers');
 const { getEmployeeID,updateRole } = require('./userSetting');
 const { getAllLeaveTypes,createLeaveType,updateLeaveType,deleteLeaveType } = require('./leaveType');
+const { savePolicy,deletePolicy } = require('./leavePolicy');
 
 module.exports = {
     getUsersData,
@@ -9,5 +10,7 @@ module.exports = {
     getAllLeaveTypes,
     createLeaveType,
     updateLeaveType,
-    deleteLeaveType
+    deleteLeaveType,
+    savePolicy,
+    deletePolicy
 };

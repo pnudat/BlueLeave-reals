@@ -2,11 +2,10 @@ const axios = require('axios');
 const ldap = require('ldapjs');
 const moment = require('moment');
 const { Pool } = require('pg');
-const { Pgconfig } = require('../../configs');
+const { Pgconfig, Key } = require('../../configs');
+const { formatDate } = require('../../helpers');
 
 const pgPool = new Pool(Pgconfig);
-
-const LINE_NOTIFY_TOKEN = '0u64RB8aluDZTC7NEWLiGoPlvCGKXm5h5v5b0NVDlvc';
 
 async function getInformData(req, res) {
     try {
@@ -147,7 +146,7 @@ async function lineNotify(ldapNameString, informDate, informType, description) {
             {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': `Bearer ${LINE_NOTIFY_TOKEN}`
+                    'Authorization': `Bearer ${Key.lineNotify}`
                 }
             }
         );
@@ -156,14 +155,6 @@ async function lineNotify(ldapNameString, informDate, informType, description) {
     } catch (error) {
         console.error('Error sending Line Notify:', error);
     }
-}
-
-async function formatDate(informDate) {
-
-    const [day, month, year] = informDate.split('/');
-    const formattedDate = `${year}/${month}/${day}`;
-
-    return formattedDate;
 }
 
 module.exports = {

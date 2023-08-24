@@ -1,6 +1,7 @@
 const ldap = require('ldapjs');
 const { Config, Pgconfig } = require('../../configs');
 const { Pool } = require('pg');
+const { birthDate,enteredDate } = require('../../helpers');
 
 const pgPool = new Pool(Pgconfig);
 
@@ -28,7 +29,7 @@ async function getEmployeeID(req, res) {
                 position: pgData.position_name,
                 email: ldapEntry.attributes.find(attr => attr.type === "mail")?.values[0],                                                                                                                                                      
             };
-            res.json({ Data: ldapFormatData });
+            res.json( ldapFormatData );
         } else {
             res.status(404).json({ error: 'Data Entry Not Found' });
         }
@@ -138,46 +139,6 @@ async function updateRoleInPostgres(EmployeeID, role_id) {    // update approver
 }
 
 // find approver data in ldap and update to postgres
-function getApprover(callback) {
-    const ldapClient = ldap.createClient({ url: Config.url });
-  
-    ldapClient.bind(Config.adminDN, Config.adminPass, (err) => {
-      if (err) {
-        console.error('LDAP bind error:', err);
-        return callback(err, null);
-      }
-  
-      const searchOptions = {
-        scope: 'sub',
-        filter: '(employeeID=*)',
-        attributes: ['cn', 'sn', 'company', 'mail', 'whenCreated', 'pwdLastSet', '', 'userAccountControl', 'employeeID']
-      };
-  
-      ldapClient.search(Config.baseDN, searchOptions, (searchErr, searchRes) => {
-  
-        const users = [];
-  
-        if (searchErr) {
-          console.error('LDAP search error:', searchErr);
-          return callback(searchErr, null);
-        }
-  
-        searchRes.on('searchEntry', (entry) => {
-          users.push(entry.pojo);  //object or pojo 
-        });
-  
-        searchRes.on('error', (err) => {
-          console.error('LDAP search result error:', err);
-          return callback(err, null);
-        });
-  
-        searchRes.on('end', () => {
-          ldapClient.unbind();
-          return callback(null, users);
-        });
-      });
-    });
-  }
 
 module.exports = {
     getEmployeeID,

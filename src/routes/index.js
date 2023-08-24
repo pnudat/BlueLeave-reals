@@ -7,7 +7,7 @@ const route = express.Router();
 
 route.post('/login',middlewares.authenticate);
 route.use('/admin', adminRoute);
-route.use('/api', usersRoute);
+route.use('/user', usersRoute);
 
 
 module.exports = route;
