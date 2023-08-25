@@ -54,16 +54,15 @@ async function formatDate(informDate) {
 }
 
 function holidayDate(holidayDate) {    // res to enteredDate function (values: DD/MM/YYYY)
-    const year = holidayDate.slice(0, 4);
-    const month = holidayDate.slice(4, 6);
-    const day = holidayDate.slice(6, 8);
-
-    const date = new Date(`${year}-${month}-${day}T00:00:00Z`);
-
-    const formatDate = `${date.getUTCDate().toString().padStart(2, '0')}/${(date.getUTCMonth() + 1).toString().padStart(2, '0')}/${date.getUTCFullYear()}`;
-
-    return formatDate;
+    const date = new Date(holidayDate);
+    
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `${day}/${month}/${year}`;
 }
+
 
 module.exports = {
     birthDate,

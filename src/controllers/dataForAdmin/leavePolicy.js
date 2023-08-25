@@ -10,7 +10,7 @@ async function savePolicy(req, res) {
 
         const policy = await policySave(data)
 
-        res.send(policy)
+        res.status(200).json({ message: policy });
     } catch (err) {
         console.error('Error:', err);
         res.status(500).json({ error: 'Internal server error' });
