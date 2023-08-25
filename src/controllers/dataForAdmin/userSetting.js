@@ -1,7 +1,7 @@
 const ldap = require('ldapjs');
 const { Config, Pgconfig } = require('../../configs');
 const { Pool } = require('pg');
-const { birthDate,enteredDate } = require('../../helpers');
+const { birthDate, enteredDate } = require('../../helpers');
 
 const pgPool = new Pool(Pgconfig);
 
@@ -27,9 +27,9 @@ async function getEmployeeID(req, res) {
                 company: ldapEntry.attributes.find(attr => attr.type === "company")?.values[0],
                 role: pgData.role_name,
                 position: pgData.position_name,
-                email: ldapEntry.attributes.find(attr => attr.type === "mail")?.values[0],                                                                                                                                                      
+                email: ldapEntry.attributes.find(attr => attr.type === "mail")?.values[0],
             };
-            res.json( ldapFormatData );
+            res.json(ldapFormatData);
         } else {
             res.status(404).json({ error: 'Data Entry Not Found' });
         }

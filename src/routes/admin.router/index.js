@@ -19,7 +19,7 @@ routers.put('/publicHoliday/:holiday_id', admin.dataForAdmin.updatePublicHoliday
 routers.delete('/publicHoliday/:holiday_id', admin.dataForAdmin.deletePublicHoliday);
 
 routers.get('/policy', express.static('/src/upload/filePolicy'));
-routers.post('/policy', upload,admin.dataForAdmin.savePolicy);
+routers.post('/policy', upload, admin.dataForAdmin.savePolicy);
 routers.delete('/policy/:policy_id', admin.dataForAdmin.deletePolicy);
 
 module.exports = routers;

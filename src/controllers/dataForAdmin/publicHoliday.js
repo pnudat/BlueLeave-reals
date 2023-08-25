@@ -27,9 +27,13 @@ async function createPublicHoliday(req, res) { // Create a new leave type
         const holiday_date = req.body.holiday_date;
         const description = req.body.description;
         const status = req.body.status;
-        const result = await holidayCreate(holiday_date, description, status);
+        if (status === 'active' || status === 'inactive') {
+            const result = await holidayCreate(holiday_date, description, status);
 
-        res.status(201).json({ message: result });
+            res.status(201).json({ message: result });
+        } else {
+            res.status(404).json({ message: 'Please enter the data correctly' });
+        }
     } catch (err) {
         console.error('Error:', err);
         res.status(500).json({ error: 'Internal server error' });
@@ -43,7 +47,7 @@ async function updatePublicHoliday(req, res) {
         const description = req.body.description;
         const status = req.body.status;
         const result = await holidayUpdate(holiday_id, holiday_date, description, status);
-            
+
         res.status(201).json({ message: result });
     } catch (err) {
         console.error('Error:', err);
@@ -83,9 +87,9 @@ async function holidayData() {
 
 async function holidayCreate(holiday_date, description, status) {
     try {
-            const query = `INSERT INTO test_holiday(holiday_date, description, status) VALUES ($1, $2, $3);`;
-            await POOL.query(query,[ `${holiday_date}`, `${description}`, `${status}` ]);
-            return 'Public Holiday created successfully'; 
+        const query = `INSERT INTO test_holiday(holiday_date, description, status) VALUES ($1, $2, $3);`;
+        await POOL.query(query, [`${holiday_date}`, `${description}`, `${status}`]);
+        return 'Public Holiday created successfully';
     } catch (err) {
         console.error('Error executing query:', err);
         throw err;
@@ -100,7 +104,7 @@ async function holidayUpdate(holiday_id, holiday_date, description, status) {
         WHERE holiday_id = $5;
         `;
 
-        await POOL.query(query,[`${holiday_date}`, `${description}`, `${status}`, holiday_id]);
+        await POOL.query(query, [`${holiday_date}`, `${description}`, `${status}`, holiday_id]);
         return 'Leave type updated successfully';
     } catch (err) {
         console.error('Error executing query:', err);

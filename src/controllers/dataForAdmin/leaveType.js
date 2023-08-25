@@ -90,7 +90,7 @@ async function leavetypeData() {
 async function leavetypeCreate(leavetype_id, leavetype_name, working_period, days, gender_id) {
     try {
         const query = `INSERT INTO leave_type(leave_type_id, leave_name, working_period, days, gender_id) VALUES ($1, $2, $3, $4, $5);`;
-        await pgPool.query(query,[leavetype_id, leavetype_name, working_period, days, gender_id]);
+        await pgPool.query(query, [leavetype_id, leavetype_name, working_period, days, gender_id]);
         return 'Leave type created successfully';
     } catch (err) {
         console.error('Error executing query:', err);
@@ -106,7 +106,7 @@ async function leavetypeUpdate(leavetype_name, working_period, days, gender_id, 
         WHERE leave_type_id = $5;
         `;
 
-        await pgPool.query(query,[`${leavetype_name}`, working_period, days, gender_id, leavetype_id]);
+        await pgPool.query(query, [`${leavetype_name}`, working_period, days, gender_id, leavetype_id]);
         return 'Leave type updated successfully';
     } catch (err) {
         console.error('Error executing query:', err);

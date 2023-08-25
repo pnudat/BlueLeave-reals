@@ -55,7 +55,7 @@ const FindUser = (username, callback) => {  // find user by username for connect
 }
 
 
-function connectLdap(_username, _password, __bindDN) { 
+function connectLdap(_username, _password, __bindDN) {
     return new Promise((resolve, reject) => {
         client.bind(Config.adminDN, Config.adminPass, (bindErr) => {
             if (bindErr) {

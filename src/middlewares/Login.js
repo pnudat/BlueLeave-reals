@@ -1,4 +1,4 @@
-const { connectLdap,FindUser } = require('./serviceLogin');
+const { connectLdap, FindUser } = require('./serviceLogin');
 const jwt = require('jsonwebtoken');
 const { Key } = require('../configs');
 
@@ -19,20 +19,20 @@ async function authenticate(req, res) {
                 return res.status(500).send('Error retrieving user data');
             } else {
                 connectLdap(username, password, data[0])
-                .then(() => {
-                    // console.log('Successfully authenticated');
-                    const token = jwt.sign(
-                        { username: username },
-                        Key.secret_key,
-                        { expiresIn: '5d' }
-                    );
+                    .then(() => {
+                        // console.log('Successfully authenticated');
+                        const token = jwt.sign(
+                            { username: username },
+                            Key.secret_key,
+                            { expiresIn: '5d' }
+                        );
 
-                    res.send({ token });
-                })
-                .catch((error) => {
-                    console.log('Error:', error);
-                    res.status(401).send('Authentication failed');
-                });
+                        res.send({ token });
+                    })
+                    .catch((error) => {
+                        console.log('Error:', error);
+                        res.status(401).send('Authentication failed');
+                    });
             }
         });
     } catch (error) {
