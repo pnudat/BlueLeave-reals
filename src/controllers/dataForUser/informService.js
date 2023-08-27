@@ -135,7 +135,6 @@ async function informCreate(EmployeeID, informDate, informType, description) {
     }
 }
 
-
 async function lineNotify(ldapNameString, informDate, informType, description) {
     try {
         const message = `\nคุณ: ${ldapNameString}\nวันที่: ${informDate}\nประเภท: ${informType}\nรายละเอียด: ${description}`;

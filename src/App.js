@@ -8,9 +8,10 @@ const port = 8000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static('/src/upload/filePolicy'));
 app.use(cors())
 
-app.use('/api/v1', path);
+app.use('/api', path);
 
 app.listen(port, () => {
     console.log(`Server started on http://localhost:${port}`);

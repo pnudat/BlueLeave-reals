@@ -46,7 +46,6 @@ function calWorkExp(ldapDate) {
 }
 
 async function formatDate(informDate) {
-
     const [day, month, year] = informDate.split('/');
     const formattedDate = `${year}/${month}/${day}`;
 
@@ -62,7 +61,6 @@ function holidayDate(holidayDate) {    // res to enteredDate function (values: D
 
     return `${day}/${month}/${year}`;
 }
-
 
 module.exports = {
     birthDate,
