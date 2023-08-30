@@ -1,5 +1,5 @@
-const dataForAdmin = require('./dataForAdmin');
-const dataForUser = require('./dataForUser');
+const dataForAdmin = require('./admin');
+const dataForUser = require('./user');
 
 module.exports = {
     dataForAdmin,

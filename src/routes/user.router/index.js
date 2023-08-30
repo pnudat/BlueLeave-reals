@@ -5,7 +5,7 @@ const publicHoliday = require('./publicHoliday');
 const routers = express.Router();
 
 routers.use('/inform', inform);
-routers.get('/publicHoliday', publicHoliday);
-// routers.get('/policy', express.static('/src/upload/filePolicy'));
+routers.use('/publicHoliday', publicHoliday);
+// routers.use('/policy', express.static('/src/upload/filePolicy'));
 
 module.exports = routers;
