@@ -1,4 +1,4 @@
-const { leavetypeData, leavetypeCreate, leavetypeUpdate, leavetypeDelete} = require('../../models/leaveType');
+const { leavetypeData, leavetypeCreate, leavetypeUpdate, leavetypeDelete} = require('../../../models/leaveType');
 
 async function getAllLeaveTypes(req, res) { // Get all leave types
     try {

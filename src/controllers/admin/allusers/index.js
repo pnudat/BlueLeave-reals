@@ -1,6 +1,6 @@
 
-const { birthDate, calWorkExp } = require('../../helpers');
-const { getAllUser, postgresData } = require('../../models/allUser');
+const { birthDate, calWorkExp } = require('../../../helpers');
+const { getAllUser, postgresData } = require('../../../models/allUser');
 
 async function getUsersData(req, res) {
   try {

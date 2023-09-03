@@ -1,4 +1,4 @@
-const { policySave, policyDelete } =require('../../models/leavePolicy');
+const { policySave, policyDelete } =require('../../../models/leavePolicy');
 
 async function savePolicy(req, res) {
     try {

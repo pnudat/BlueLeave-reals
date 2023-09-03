@@ -1,8 +1,8 @@
-const getUsersData = require('./allUsers');
-const { getEmployeeID, updateRole } = require('./userSetting');
-const { getAllLeaveTypes, createLeaveType, updateLeaveType, deleteLeaveType } = require('./leaveType');
-const { allPublicHoliday, createPublicHoliday, updatePublicHoliday, deletePublicHoliday } = require('./publicHoliday');
-const { savePolicy, deletePolicy } = require('./leavePolicy');
+const getUsersData = require('./allusers');
+const { getEmployeeID, updateRole } = require('./usersetting');
+const { getAllLeaveTypes, createLeaveType, updateLeaveType, deleteLeaveType } = require('./leavetype');
+const { allPublicHoliday, createPublicHoliday, updatePublicHoliday, deletePublicHoliday } = require('./public_holiday');
+const { savePolicy, deletePolicy } = require('./leavepolicy');
 
 module.exports = {
     getUsersData,
