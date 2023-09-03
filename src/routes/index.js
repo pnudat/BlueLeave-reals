@@ -1,12 +1,12 @@
 const express = require('express');
-const adminRoute = require('./admin.router');
-const usersRoute = require('./user.router');
-const authentication = require('./auth.router');
+const AdminRoute = require('./Admin');
+const UsersRoute = require('./Users');
+const AuthenRoute = require('./Authen');
 
 const route = express.Router();
 
-route.use('/auth', authentication);
-route.use('/private', adminRoute);
-route.use('/public', usersRoute);
+route.use('/auth', AuthenRoute);
+route.use('/private', AdminRoute);
+route.use('/public', UsersRoute);
 
 module.exports = route;
