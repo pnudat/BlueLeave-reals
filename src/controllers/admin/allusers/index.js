@@ -1,4 +1,3 @@
-
 const {calWorkExp } = require('../../../helpers');
 const { getAllUser, postgresData } = require('../../../models/allusers');
 
