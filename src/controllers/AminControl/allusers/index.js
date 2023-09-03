@@ -1,5 +1,5 @@
 const {calWorkExp } = require('../../../helpers');
-const { getAllUser, postgresData } = require('../../../models/allusers');
+const { getAllUser, postgresData } = require('../../../models/AllUserService');
 
 async function getUsersData(req, res) {
   try {

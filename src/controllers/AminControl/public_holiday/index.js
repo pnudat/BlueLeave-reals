@@ -1,4 +1,4 @@
-const { holidayData, holidayCreate, holidayUpdate, holidayDelete} = require('../../../models/public_holiday');
+const { holidayData, holidayCreate, holidayUpdate, holidayDelete} = require('../../../models/PublicHolidayService');
 const { holidayDate } = require('../../../helpers');
 
 async function allPublicHoliday(req, res) { // Get all leave types

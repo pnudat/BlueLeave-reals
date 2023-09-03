@@ -1,4 +1,4 @@
-const { getUser,informData,informCreate,lineNotify } = require('../../../models/inform')
+const { getUser,informData,informCreate,lineNotify } = require('../../../models/InformService')
 const moment = require('moment');
 const { formatDate } = require('../../../helpers');
 

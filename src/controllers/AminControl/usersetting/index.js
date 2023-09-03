@@ -1,4 +1,4 @@
-const { getLdapData, getPostgresData, updateRoleInPostgres} = require('../../../models/usersetting');
+const { getLdapData, getPostgresData, updateRoleInPostgres} = require('../../../models/UserSettingService');
 const { birthDate, enteredDate } = require('../../../helpers');
 
 async function getEmployeeID(req, res) {
