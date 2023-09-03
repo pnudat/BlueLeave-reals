@@ -1,6 +1,6 @@
-const { connectLdap, FindUser } = require('../models/serviceLogin');
+const { connectLdap, FindUser } = require('../../models/serviceLogin');
 const jwt = require('jsonwebtoken');
-const { Key } = require('../configs');
+const { Key } = require('../../configs');
 
 async function authenticate(req, res) {
     try {
