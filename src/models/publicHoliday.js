@@ -6,10 +6,8 @@ const POOL = new Pool(Pgconfig);
 async function holidayData() {
     try {
         const query = `
-        SELECT
-            holiday_date,description,status
-        FROM
-            test_holiday
+        SELECT holiday_date, description, status FROM test_holiday
+        WHERE is_deleted = false
         ORDER BY test_holiday.holiday_date ASC;
         `;
 
@@ -51,11 +49,30 @@ async function holidayUpdate(holiday_id, holiday_date, description, status) {
 async function holidayDelete(holiday_id) {
     try {
         const query = `
-        DELETE FROM test_holiday
-        WHERE holiday_id = $1;
+        UPDATE leave_type
+        SET is_delete = TRUE
+        WHERE leave_type_id = $1;
         `;
         await POOL.query(query, [holiday_id]);
         return 'Public Holiday deleted successfully';
+    } catch (err) {
+        console.error('Error executing query:', err);
+        throw err;
+    }
+}
+
+async function holidayData() {
+    try {
+        const query = `
+        SELECT
+            holiday_date,description,status
+        FROM
+            test_holiday
+        ORDER BY test_holiday.holiday_date ASC;
+        `;
+
+        const { rows } = await POOL.query(query);
+        return rows;
     } catch (err) {
         console.error('Error executing query:', err);
         throw err;

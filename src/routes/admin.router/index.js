@@ -8,8 +8,8 @@ const policy = require('./policy');
 const routers = express.Router();
 
 routers.use('/users', users);
-routers.use('/leavetypes', leaveType);
-routers.use('/publicHoliday', publicHoliday);
+routers.use('/leavetype', leaveType);
+routers.use('/public-holiday', publicHoliday);
 routers.use('/policy', policy);
 
 module.exports = routers;

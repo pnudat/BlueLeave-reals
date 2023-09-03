@@ -12,7 +12,6 @@ async function authenticate(req, res) {
         } else if (!password) {
             return res.status(401).send('Password is required');
         }
-
         FindUser(username, (err, data) => {
             if (err) {
                 console.log('Error retrieving user data:', err);
@@ -20,27 +19,25 @@ async function authenticate(req, res) {
             } else {
                 connectLdap(username, password, data[0])
                     .then(() => {
-                        // console.log('Successfully authenticated');
+                        console.log('Successfully authenticated');
                         const token = jwt.sign(
                             { username: username },
                             Key.secret_key,
                             { expiresIn: '5d' }
                         );
 
-                        res.send({ token });
+                        return res.send({ token });
                     })
                     .catch((error) => {
                         console.log('Error:', error);
-                        res.status(401).send('Authentication failed');
+                        return res.status(401).send('Authentication failed');
                     });
             }
         });
     } catch (error) {
         console.log('Error:', error);
-        res.status(500).send('Internal server error');
+        return res.status(500).send('Internal server error');
     }
 }
 
-module.exports = {
-    authenticate
-};
+module.exports = authenticate;

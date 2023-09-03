@@ -41,7 +41,8 @@ function calWorkExp(ldapDate) {
         formattedDate: formattedDate,
         years: years,
         months: months,
-        days: days
+        days: days,
+        workTime: `${years} Y ${months} M ${days} D`
     };
 }
 

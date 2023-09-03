@@ -2,10 +2,9 @@ const { policySave, policyDelete } =require('../../models/leavePolicy');
 
 async function savePolicy(req, res) {
     try {
-        const data = req.body;
-        data.file = req.file.filename;
+        const file = req.file.filename;
 
-        const policy = await policySave(data)
+        const policy = await policySave(file)
 
         res.status(200).json({ message: policy });
     } catch (err) {

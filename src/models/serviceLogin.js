@@ -62,14 +62,14 @@ function connectLdap(_username, _password, __bindDN) {
                 reject(bindErr);
                 return;
             }
-            // console.log(`Successfully bound to LDAP server: ${Config.url}`);
+            console.log(`Successfully bound to LDAP server: ${Config.url}`);
             client.unbind((unbindErr) => {
                 if (unbindErr) {
                     console.error(`LDAP unbind error for ${Config.url}:`, unbindErr);
                     reject(unbindErr);
                     return;
                 }
-                // console.log(`Successfully unbound from LDAP server: ${Config.url}`);
+                console.log(`Successfully unbound from LDAP server: ${Config.url}`);
                 resolve();
             });
         });

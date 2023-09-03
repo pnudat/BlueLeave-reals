@@ -4,7 +4,8 @@ const fs = require('fs');
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        const policyDir = './src/upload/filePolicy/';
+        // console.log(path.resolve);
+        const policyDir = './src/upload/';
         if (!fs.existsSync(policyDir)) {
             fs.mkdirSync(policyDir);
         }

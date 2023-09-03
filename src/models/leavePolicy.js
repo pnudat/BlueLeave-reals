@@ -3,10 +3,10 @@ const { Pgconfig } = require('../configs');
 
 const pool = new Pool(Pgconfig);
 
-async function policySave(data) {
+async function policySave(file) {
     try {
         const query = `INSERT INTO files(filename) VALUES ($1);`;
-        await pool.query(query, [data]);
+        await pool.query(query, [file]);
         return 'Leave Policy created successfully';
     } catch (err) {
         console.error('Error executing query:', err);

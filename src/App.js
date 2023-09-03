@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('./routes');
+const paths = require('./routes');
+const path = require('path');
 const cors = require('cors');
 
 const app = express();
@@ -8,10 +9,13 @@ const port = 8000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static('/src/upload/filePolicy'));
+app.use('/leavepolicy', express.static('src'));
 app.use(cors())
 
-app.use('/api', path);
+app.use('/api', paths);
+app.use('*',(req, res, ) =>{
+    res.json({massage: 'url not found'});
+})
 
 app.listen(port, () => {
     console.log(`Server started on http://localhost:${port}`);
