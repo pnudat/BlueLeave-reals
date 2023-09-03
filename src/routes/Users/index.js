@@ -1,6 +1,6 @@
 const express = require('express');
-const inform = require('./inform');
-const publicHoliday = require('./public_holiday');
+const inform = require('./Inform');
+const publicHoliday = require('./PublicHoliday');
 
 const routers = express.Router();
 

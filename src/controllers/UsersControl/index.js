@@ -1,5 +1,5 @@
-const { getInformData,sendLineNotify } = require('./inform');
-const { allPublicHoliday } = require('./public-holiday');
+const { getInformData,sendLineNotify } = require('./InformService');
+const { allPublicHoliday } = require('./PublicHolidayService');
 
 module.exports = {
     getInformData,
